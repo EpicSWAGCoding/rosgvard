@@ -14,7 +14,8 @@ services:
       - NODE_ENV=production
     ports:
       - 4000:4000
-    depends_on: []
+    depends_on:
+      - postgres
 
   frontend:
     build:
@@ -44,5 +45,19 @@ services:
       - ./letsencrypt:/var/www/certbot
     entrypoint: ''
 
-# Note: This compose expects an external PostgreSQL (DATABASE_URL configured).
-# If you want Postgres in Docker, add a postgres service and set DATABASE_URL accordingly.
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=rosgvard
+      - POSTGRES_PASSWORD=change_me
+      - POSTGRES_DB=rosgvard_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
+
+# Note: This compose now includes a Postgres service. For production, set
+# `DATABASE_URL` in `.env` to: postgresql://<user>:<pass>@postgres:5432/rosgvard_db
