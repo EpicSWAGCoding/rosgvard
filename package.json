@@ -6,6 +6,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc -p .",
     "start": "node dist/server.js",
+    "import-users": "node import-users.js",
     "prisma": "prisma"
   },
   "dependencies": {
