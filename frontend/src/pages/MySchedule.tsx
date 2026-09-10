@@ -18,7 +18,8 @@ export default function MySchedule({ token, onLogout }: { token: string; onLogou
   useEffect(() => {
     (async () => {
       const data = await getMyShifts(token);
-      setShifts(data);
+      // Defensive: ensure we always set an array to avoid crashing on .map
+      setShifts(Array.isArray(data) ? data : []);
     })();
   }, [token]);
 
