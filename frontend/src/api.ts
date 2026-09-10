@@ -1,4 +1,5 @@
-export const apiBase = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
+// In production we want relative API paths so nginx proxy handles /api/*
+export const apiBase = import.meta.env.VITE_API_BASE ?? '';
 
 export async function login(phone: string, password: string) {
   const res = await fetch(`${apiBase}/api/auth/login`, {
