@@ -34,6 +34,13 @@ router.get('/', requireAuth, async (req, res) => {
   res.json(shifts);
 });
 
+// Get current user's shifts (specific route must be before '/:id')
+router.get('/my', requireAuth, async (req: AuthRequest, res) => {
+  const userId = req.user?.userId;
+  const assignments = await prisma.shiftAssignment.findMany({ where: { userId }, include: { shift: true } });
+  res.json(assignments);
+});
+
 // Get single shift
 router.get('/:id', requireAuth, async (req, res) => {
   const shift = await prisma.shift.findUnique({ where: { id: req.params.id }, include: { assignments: true } });
